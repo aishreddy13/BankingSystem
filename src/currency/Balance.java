@@ -2,7 +2,9 @@ package currency;
 
 
 import exceptions.BalanceInsufficientException;
+import exceptions.CurrencyNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Balance{
@@ -33,33 +35,38 @@ public class Balance{
             if (cur.getName().equals(currency.getName()))
             {
                 cur.setQuantity(cur.getQuantity()+currency.getQuantity());
-            }
-            else {
-                currencyList.add(currency);
+                return;
             }
         }
-
+        currencyList.add(currency);
     }
 
-    public void removebalance(Currency currency) throws BalanceInsufficientException,Exception
-    {
+    public void substractbalance(Currency currency) throws BalanceInsufficientException, CurrencyNotFoundException {
         for (Currency cur : currencyList ) {
             if (cur.getName().equals(currency.getName()))
             {
                 if (cur.getQuantity()>currency.getQuantity())
                 {
                     cur.setQuantity(cur.getQuantity()-currency.getQuantity());
+                    return;
                 }
                 else {
                     throw new BalanceInsufficientException("Insufficient Balance. You have only " + cur.getQuantity()+" "+cur.getSymbol()+"in balance");
                 }
 
             }
-            else {
-                currencyList.add(currency);
-            }
         }
+        throw new CurrencyNotFoundException("currency "+currency.getName() +" is not available with the user");
 
+    }
+
+    public List<String> getCurrencyNameList()
+    {
+        List<String> currencynames = new ArrayList<>();
+        for (Currency cur : currencyList) {
+            currencynames.add(cur.getName());
+        }
+        return currencynames;
     }
 
 }
