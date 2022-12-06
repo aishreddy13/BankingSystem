@@ -1,6 +1,8 @@
 package currency;
 
 
+import exceptions.BalanceInsufficientException;
+
 import java.util.List;
 
 public class Balance{
@@ -39,12 +41,19 @@ public class Balance{
 
     }
 
-    public void removebalance(Currency currency)
+    public void removebalance(Currency currency) throws BalanceInsufficientException,Exception
     {
         for (Currency cur : currencyList ) {
-            if (cur.getName().equals(currency.getName()) )
+            if (cur.getName().equals(currency.getName()))
             {
-                cur.setQuantity(cur.getQuantity()+currency.getQuantity());
+                if (cur.getQuantity()>currency.getQuantity())
+                {
+                    cur.setQuantity(cur.getQuantity()-currency.getQuantity());
+                }
+                else {
+                    throw new BalanceInsufficientException("Insufficient Balance. You have only " + cur.getQuantity()+" "+cur.getSymbol()+"in balance");
+                }
+
             }
             else {
                 currencyList.add(currency);
