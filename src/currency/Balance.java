@@ -25,9 +25,7 @@ public class Balance{
         return walletValueinUSD;
     }
 
-    public void setWalletValueinUSD(float walletValueinUSD) {
-        this.walletValueinUSD = walletValueinUSD;
-    }
+
 
     public void addbalance(Currency currency)
     {
@@ -67,6 +65,22 @@ public class Balance{
             currencynames.add(cur.getName());
         }
         return currencynames;
+    }
+
+
+    public void setWalletValueinUSD() {
+        float usdValue=0;
+        if (currencyList!=null && currencyList.size()>0) {
+            for (Currency cur : currencyList) {
+                if (!cur.getName().equals("USD")) {
+                    // convert currency
+                    usdValue = cur.getQuantity();
+                } else {
+                    usdValue = cur.getQuantity();
+                }
+            }
+            this.walletValueinUSD = usdValue;
+        }
     }
 
 }

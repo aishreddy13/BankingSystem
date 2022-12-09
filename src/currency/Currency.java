@@ -5,6 +5,12 @@ public class Currency{
    private String symbol;
    private float quantity;
 
+    public Currency(String name, String symbol, float quantity) {
+        this.name = name;
+        this.symbol = symbol;
+        this.quantity = quantity;
+    }
+
     public String getName() {
         return name;
     }
