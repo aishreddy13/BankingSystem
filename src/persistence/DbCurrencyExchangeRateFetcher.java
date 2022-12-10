@@ -16,10 +16,6 @@ import java.util.stream.Collectors;
 public class DbCurrencyExchangeRateFetcher {
 
     static DbConnection dbConnection= new DbConnection();
-
-
-
-
     Connection connection = dbConnection.getConnection();
 
     public float fetchExchangeRate(String from, String to) throws DBQueryExecutionException, ConversionRateNotFoundException {

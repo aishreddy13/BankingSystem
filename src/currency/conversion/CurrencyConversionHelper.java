@@ -18,6 +18,7 @@ public class CurrencyConversionHelper {
         return new Currency(outCurrencyName,newCurrencyValue);
     }
 
+
     public static void main(String[] args) throws DBQueryExecutionException, ConversionRateNotFoundException {
         Currency usd = new Currency("USD","USD",10);
         Currency inr = convertCurrency(usd,"INR");
