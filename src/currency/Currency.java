@@ -10,6 +10,11 @@ public class Currency{
         this.symbol = symbol;
         this.quantity = quantity;
     }
+    public Currency(String name, float quantity) {
+        this.name = name;
+        this.symbol = null;
+        this.quantity = quantity;
+    }
 
     public String getName() {
         return name;

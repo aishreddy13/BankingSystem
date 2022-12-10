@@ -2,6 +2,7 @@ package persistence;
 
 import exceptions.ConversionRateNotFoundException;
 import exceptions.DBConnectionException;
+import exceptions.DBNoDataFoundException;
 import exceptions.DBQueryExecutionException;
 import netscape.javascript.JSObject;
 
@@ -22,24 +23,30 @@ public class DbCurrencyExchangeRateFetcher {
     Connection connection = dbConnection.getConnection();
 
     public float fetchExchangeRate(String from, String to) throws DBQueryExecutionException, ConversionRateNotFoundException {
-        String query = "select * from currencyexchangerate where currencyName="+from;
+        String query = "select * from currencyexchangerate where currenyName='"+from+"';";
         ResultSet results=null;
         try {
 
             Statement sqlSt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
             results=sqlSt.executeQuery(query);
-            String rateString = results.getString("currencyConversionRate");
-            Map<String, String> collect = Arrays.stream(rateString.split(","))
-                    .map(s -> s.split(":", 2))
-                    .collect(Collectors.toMap(a -> a[0], a -> a.length > 1 ? a[1] : ""));
-            if (collect.containsKey(to))
-            {
-                return Float.parseFloat( collect.get(to));
-            }
-            else {
-                System.out.println("Cannot be converted");
-                throw new ConversionRateNotFoundException("No conversion rate found for "+from + "  " + to);
-            }
+           if (results.next())
+           {
+               String rateString = results.getString("currencyConversionRate");
+               Map<String, String> collect = Arrays.stream(rateString.split(","))
+                       .map(s -> s.split(":", 2))
+                       .collect(Collectors.toMap(a -> a[0], a -> a.length > 1 ? a[1] : ""));
+               if (collect.containsKey(to))
+               {
+                   return Float.parseFloat( collect.get(to));
+               }
+               else {
+                   System.out.println("Cannot be converted");
+                   throw new ConversionRateNotFoundException("No conversion rate found for "+from + "  " + to);
+               }
+           }
+           else {
+               throw new DBNoDataFoundException("No data found");
+           }
         }catch (ConversionRateNotFoundException conversionRateNotFoundException)
         {
             throw conversionRateNotFoundException;

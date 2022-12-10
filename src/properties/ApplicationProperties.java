@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class ApplicationProperties {
 
-    private static String filePath = System.getProperty("user.dir") +File.separator+ "properties" + File.separator + "config" + ".properties";
+    private static String filePath = System.getProperty("user.dir") +File.separator+ "BankingSystem/properties" + File.separator + "config" + ".properties";
 
     public Properties properties = new Properties();
 
